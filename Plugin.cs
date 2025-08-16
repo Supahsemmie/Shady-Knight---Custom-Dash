@@ -55,8 +55,9 @@ public class Dash_Patch
             Vector3 inputDir = (__instance.tHead.forward * z) + (__instance.tHead.right * x);
             inputDir.y = 0f;
 
-            // Only dash on input, grounded and not holding kick (holding kick has weird traction)
-            if (inputDir != Vector3.zero && __instance.grounder.grounded && !Input.GetKey(__instance.kickKey))
+            // Only dash on input, grounded and not holding kick (holding kick has weird traction) or sliding (breaks momentum)
+            // You can still dash into slide for big momentum which should mostly happen deliberately
+            if (inputDir != Vector3.zero && __instance.grounder.grounded && !Input.GetKey(__instance.kickKey) && __instance.slide.slideState == 0)
             {
                 inputDir.Normalize();
                 Vector3 newVelocity = inputDir * dashSpeed;
